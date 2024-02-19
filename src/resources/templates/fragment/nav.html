@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<nav class="returnNav" th:fragment="returnNav">
+        <ul>
+            <li><a th:href="@{/}">ホーム</a></li>
+            <li><a th:href="@{/applicationListAndSearch}">アプリ一覧</a></li>
+            <li><a th:href="@{/recordListAndSearch}">備忘録一覧</a></li>
+        </ul>
+    </nav>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>サブカテゴリー詳細</title>
+	<link rel="stylesheet" th:href="@{/css/profile.css}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+	
+	<!-- サブカテゴリー詳細画面 -->
+	<main>
+		
+		<h2 th:text="${subCategoryName}">詳細画面</h2>
+		
+		<h4></h4>
+		<table>
+			<tr>
+				<th>期間</th>
+				<th>関連アプリケーション数</th>
+				<th>関連備忘録数</th>
+			</tr>
+			<tr th:each="subCategoryDetail : ${subCategoryDetails}">
+				<td th:text="${subCategoryDetail.month}"></td>
+				<td th:text="${subCategoryDetail.applicationCount}"></td>
+				<td th:text="${subCategoryDetail.recordCount}"></td>
+			</tr>
+		</table>		
+		<!-- 将来的に、X軸を日付、Y軸を関連数とした棒グラフjsを作り埋め込む -->
+		
+		<!-- 関連備忘録とアプリケーションを埋め込む -->
+		<div th:replace="~{fragment/pickup}"></div>
+	
+	</main>
+	
+	<!-- フッターを埋め込む -->
+	<footer th:replace="~{fragment/footer :: footer}"></footer>
+	
+</body>
+</html>

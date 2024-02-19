@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>アプリケーション詳細</title>
+	<link rel="stylesheet" th:href="@{/css/profile.css}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<boyd class="fade-in">
+
+	<header>
+		<!-- returnNavを埋め込む -->
+		<nav th:replace="~{fragment/nav :: returnNav}"></nav>
+		<!-- アプリケーション名 -->
+		<h1 class="applicationDetail-title" th:text="${applicationDetail.applicationName}"></h1>
+	</header>
+	
+	<div class="detail-info">
+		<div>
+			<!-- ステータス -->
+			<p th:text="${'ステータス: ' + applicationDetail.status}"></p>
+		</div>
+		
+		<div class="detail-info-right">
+			<!-- 更新日 -->
+			<p th:if="${applicationDetail.updateDate!=null}" th:text="'情報更新: ' + ${applicationDetail.updateDate}"></p>
+			<!-- ID -->
+			<p th:text="${'ID: ' + applicationDetail.applicationId}"></p>
+		</div>
+	</div>
+
+	<section class="applicationDetail-section">
+		<h2 class="applicationDetail-h2">概要</h2>
+		<div class="outputHtml">
+			<p th:utext="${applicationDetail.overview}"></p>
+		</div>
+	</section>
+	
+	<section class="applicationDetail-section">
+		<h2 class="applicationDetail-h2">機能要件</h2>
+		<div class="outputHtml">
+			<p th:utext="${applicationDetail.requirements}"></p>
+		</div>
+	</section>
+
+	<section class="applicationDetail-section">
+		<h2 class="applicationDetail-h2">アプリケーションの動作</h2>
+		<video controls class="sample">
+			<source th:src="@{/mp4/${applicationDetail.applicationNameEn}.mp4}" type="video/mp4">
+		</video>
+		<p><a th:href="@{https://y-r-tt.com/${applicationDetail.applicationNameEn}}">実際のサイトはこちら</a></p>
+	</section>
+	
+	<section class="applicationDetail-section">
+		<h2 class="applicationDetail-h2">使用技術と作成技法</h2>
+		<div class="applicationDetail-technic">
+			<div class="applicationDetail-technic-category">
+				<p th:each="subCategory : ${subCategories}" th:text="${subCategory.subCategoryName + '　/　'}"></p>
+			</div>
+			<div class="applicationDetail-technic-tag">
+				<p th:each="tag : ${tags}" th:text="${tag.tagName} + '　/　'"></p>
+			</div>
+		</div>
+		
+		<h4 class="applicationDetail-h4">ソースコード</h4>
+		<p>GitHubにてソースコードを公開しています。リンクは
+			<a th:href="@{https://github.com/tetosetora/${applicationDetail.applicationNameEn}}" th:text="'https://github.com/tetosetora/' + ${applicationDetail.applicationNameEn}"></a>
+		</p>
+	</section>
+
+
+	<section class="applicationDetail-section">
+		<h2 class="applicationDetail-h2">詳細</h2>
+		
+		<div>
+			<h4 class="applicationDetail-h4">制作開始日：</h4>
+			<p th:text="${applicationDetail.startDate}"></p>
+		</div>
+		
+		<div th:if="${applicationDetail.duration!=null && !applicationDetail.duration.equals('')}">
+			<h4 class="applicationDetail-h4">製作期間　：</h4>
+			<p th:text="${applicationDetail.duration + 'か月'}"></p>
+		</div>
+		
+		<div th:if="${applicationDetail.responsibility!=null && !applicationDetail.responsibility.equals('')}">
+			<h4 class="applicationDetail-h4">担当部位　：</h4>
+			<div class="outputHtml">
+				<p th:utext="${applicationDetail.responsibility}"></p>
+			</div>
+		</div>
+	</section>
+
+	<section th:if="${applicationDetail.challenges!=null && !applicationDetail.challenges.equals('')}" class="applicationDetail-section">
+		<h2 class="applicationDetail-h2">反省点・困難だったポイント</h2>
+		<div class="outputHtml">
+			<p th:utext="${applicationDetail.challenges}"></p>
+		</div>
+	</section>
+
+	<section th:if="${applicationDetail.futureVision!=null && !applicationDetail.futureVision.equals('')}" class="applicationDetail-section">
+		<h2 class="applicationDetail-h2">今後のビジョン</h2>
+		<div class="outputHtml">
+			<p th:utext="${applicationDetail.futureVision}"></p>
+		</div>
+	</section>
+	
+	<section th:if="${!applications.isEmpty() && !records.isEmpty()}" class="applicationDetail-section">
+		<!-- 関連備忘録とアプリケーションを埋め込む -->
+		<div th:replace="~{fragment/pickup}"></div>
+	</section>
+
+	<!-- フッターを埋め込む -->
+	<footer th:replace="~{fragment/footer :: footer}"></footer>
+
+</boyd>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>自己紹介ページ</title>
+	<link rel="stylesheet" th:href="@{/css/profile.css}">
+	<!-- 円グラフ用にchart.jsライブラリを追加 -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<!-- フォント読み込み -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body class="fade-in">
+	<header>
+		<div class="top">
+			<div class="person">
+				<img th:src="@{/images/profileItem/person.PNG}" alt="人">
+			</div>
+			<div class="face">
+				<h1>Profile Engineer</h1>
+				<nav class="contents">
+					<div class="leftContents">
+						<div class="contentsImg">
+							<a href="#app"><img th:src="@{/images/profileItem/app.jpg}" alt="アプリケーション"
+									height="140px"></a>
+						</div>
+						<div class="contentsImg">
+							<a href="#record"><img th:src="@{/images/profileItem/record.jpg}" alt="備忘録"
+									height="110px"></a>
+						</div>
+					</div>
+					<div class="rightContents">
+						<div class="contentsImg">
+							<a href="#selfIntroduction"><img th:src="@{/images/profileItem/introduction.png}" alt="自己紹介"
+									height="70px"></a>
+						</div>
+						<div class="contentsImg">
+							<a href="#skill"><img th:src="@{/images/profileItem/skill.jpg}" alt="スキル" height="70px"></a>
+						</div>
+						<div class="contentsImg">
+							<a href="#admin"><img th:src="@{/images/profileItem/admin.PNG}" alt="サイト管理"
+									height="50px"></a>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
+	</header>
+
+	<section id="selfIntroduction">
+		<h2 class="introduction_h2">自己紹介</h2>
+		<!-- html記法にサニタイズされたものを表示 -->
+		<div class="outputHtml">
+			<p th:utext="${userIntroduction}"></p>
+		</div>
+	</section>
+
+	<section id="skill">
+		<h2 class="skill_h2">スキル</h2>
+		<!-- メインカテゴリーとそのサブカテゴリーを表示。サブカテゴリーには関連する(アプリ×10+備忘録×1)数を表示 -->
+		<div class="skill-mainCategoryList" th:each="categoryTotalling, catIdx : ${categoryTotallings}">
+			<div class="skill-subCategoryList">
+				<h4 th:text="${categoryTotalling.mainCategoryName}"></h4>
+				<ul>
+					<li class="skill-subCategory"
+						th:each="subCategoryCount, subIdx : ${categoryTotalling.subCategoryCountDto}">
+						<div th:if="${subCategoryCount.subCategoryApplicationCount!=null && subCategoryCount.subCategoryRecordCount!=null}">
+							<a href="#" class="TwoChoicesLink"
+								th:data-target-dialog="'dialog-' + ${catIdx.index} + '-' + ${subIdx.index}"
+								th:text="${subCategoryCount.subCategoryName}"></a>
+							<p
+								th:text="${'学習スコア:' + (subCategoryCount.subCategoryApplicationCount*10 + subCategoryCount.subCategoryRecordCount)}">
+							</p>
+						</div>
+
+						<!-- ダイアログ -->
+						<div class="dialog hidden" th:id="'dialog-' + ${catIdx.index} + '-' + ${subIdx.index}">
+							<p>どちらの関連データを表示しますか？</p>
+							<div>
+								<a class="skill-dialog-a" th:href="@{/applicationListAndSearch(subCategoryId=${subCategoryCount.subCategoryId}, 
+			                    		subCategoryName=${subCategoryCount.subCategoryName})}">アプリケーション</a>
+								<a class="skill-dialog-a" th:href="@{/recordListAndSearch(subCategoryId=${subCategoryCount.subCategoryId}, 
+			                    		subCategoryName=${subCategoryCount.subCategoryName})}">備忘録</a>
+							</div>
+							<button class="cancel-button">キャンセル</button>
+						</div>
+
+					</li>
+				</ul>
+			</div>
+			<!-- グラフを表示するためのマーカー -->
+			<div class="chart-container" th:id="'chart-container-' + ${catIdx.index}"></div>
+		</div>
+		<p>※学習スコアは[関連するアプリケーション数]×10＋[関連する備忘録数]で算出しています。</p>
+	</section>
+
+	<section id="app">
+		<h2 class="app_h2">制作アプリケーション</h2>
+		<p>
+			私の作成したアプリケーションを紹介させていただいています。<br>
+			詳しくは→<a th:href="@{/applicationListAndSearch}">こちら</a>←をご覧ください。
+		</p>
+		<h4>最新アプリケーション紹介</h4>
+		<div th:replace="~{fragment/pickup :: relationApplication}"></div>
+	</section>
+
+	<section id="record">
+		<h2 class="record_h2">備忘録</h2>
+		<p>
+			日々で学んだこと忘れないように備忘録としてまとめています。
+			初心者の視点から私自身が躓いたポイントとその解決策をまとめているので良ければ見てください。
+			詳しくは→<a th:href="@{/recordListAndSearch}">こちら</a>←をご覧ください。
+		</p>
+		<h4>最新備忘録</h4>
+		<div th:replace="~{fragment/pickup :: relationRecord}"></div>
+	</section>
+
+	<section id="vision">
+		<h2 class="vision_h2">現状の課題と今後の展望</h2>
+		<!-- html記法にサニタイズされたものを表示 -->
+		<div class="outputHtml">
+			<p th:utext="${futureChallenges}"></p>
+		</div>
+	</section>
+
+	<section id="admin">
+		<h2 class="admin_h2">サイト管理</h2>
+		<p>
+			本サイトに掲載している情報を管理するためのページを作成しています。ポートフォリオの一部としてご覧になっていただければ幸いです。
+			<a th:href="@{/adminIndex}" target="_blank">管理画面へ</a>
+		</p>
+	</section>
+
+	<!-- フッターを埋め込む -->
+	<footer th:replace="~{fragment/footer :: footer}"></footer>
+
+	<script th:inline="javascript">
+
+		// スキルを選択するとダイアログを表示
+		document.querySelectorAll('.TwoChoicesLink').forEach(function (link) {
+			link.addEventListener('click', function (event) {
+				event.preventDefault();
+				var dialogId = this.getAttribute('data-target-dialog');
+				document.getElementById(dialogId).classList.remove('hidden');
+			});
+		});
+
+		document.querySelectorAll('.cancel-button').forEach(function (button) {
+			button.addEventListener('click', function () {
+				this.closest('.dialog').classList.add('hidden');
+			});
+		});
+
+
+		// メインカテゴリーのサブカテゴリー割合を円グラフで表示
+		/*<![CDATA[*/
+		window.onload = function () {
+			// thymeleafから取得
+			var categoryTotallings = /*[[${categoryTotallings}]]*/[];
+
+			// 各メインカテゴリーごとにループ
+			categoryTotallings.forEach(function (categoryTotalling, catIdx) {
+				// サブカテゴリーのデータを取得
+				var labels = categoryTotalling.subCategoryCountDto.map(function (subCategoryCount) {
+					return subCategoryCount.subCategoryName;
+				});
+				var data = categoryTotalling.subCategoryCountDto.map(function (subCategoryCount) {
+					return subCategoryCount.subCategoryApplicationCount * 10 + subCategoryCount.subCategoryRecordCount;
+				});
+
+				// canvas要素を作成
+				var canvasId = 'skill-chart-' + catIdx;
+				var canvasHtml = '<canvas id="' + canvasId + '""></canvas>';
+
+				var chartContainerId = 'chart-container-' + catIdx;
+				var chartContainer = document.getElementById(chartContainerId);
+
+				if (chartContainer) {
+					// マーカーに挿入
+					chartContainer.innerHTML = canvasHtml;
+
+					// 円グラフ作成
+					var ctx = document.getElementById(canvasId).getContext('2d');
+					new Chart(ctx, {
+						type: 'doughnut',
+						data: {
+							labels: labels,
+							datasets: [{
+								data: data,
+							}]
+						},
+						options: {
+							responsive: true,
+							maintainAspectRatio: false
+						}
+					});
+				}
+			});
+		};
+		/*]]>*/
+	</script>
+
+</body>
+
+</html>

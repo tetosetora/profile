@@ -1,0 +1,132 @@
+@charset "UTF-8";
+
+/* 管理ナビゲーション */
+.adminNav{
+	margin: 5px 40px;
+}
+
+.adminNav a{
+	margin: 0 10px;
+	color: #6c4c41;
+	text-decoration: none;
+	font-weight: bold;
+	position: relative;
+}
+
+.adminNav a:hover {
+	color: #e11b1b;
+}
+
+.adminNav a:before {
+	content: '';
+	position: absolute;
+	bottom: -3px;
+	left: 0;
+	right: 0;
+	height: 2px;
+	background: #544d45;
+	width: 0;
+	transition: all 0.3s ease-in-out;
+}
+
+.adminNav a:hover:before {
+	width: 100%;
+}
+
+.admiin-index{
+	margin: 30px 50px;
+	font-size: 30px;
+}
+
+.admiin-index .adminNav{
+	display: flex;
+	flex-direction: column;
+}
+
+/* 管理共通 */
+.admin-title{
+	background-color: #544d45;
+	color: aliceblue;
+	margin: 5px 0;
+	padding: 5px 20px;
+}
+
+.admin-updateCreateForm, .admin-actionSelectForm{
+	display: flex;
+    flex-direction: column;
+    margin: 20px 50px;
+    padding: 20px;
+    border: solid 2px;
+    background-color: #fff;
+}
+
+.admin-updateCreateForm div{
+	margin-top: 10px;
+}
+
+.admin-actionSelectForm form{
+	display: flex;
+}
+
+.admin-updateCreateForm a, .admin-actionSelectForm a{
+	color: #1389a0;
+	text-decoration: none;
+	font-size: 1.2em;
+	overflow-wrap: break-word;
+}
+
+input[type="text"]{
+	width: 97%;
+	margin: 0 10px;
+}
+
+.admin-actionSelectForm-form input{
+	width: 260px;
+}
+
+.admin-form-textarea{
+	width: 97%;
+    margin: 3px 10px;
+    padding: 3px;
+    font-size: 15px;
+    color: #0098a7;
+}
+
+fieldset{
+	display: flex;
+    flex-wrap: wrap;
+    grid-gap: 15px;
+    padding: 5px 30px;
+    margin: 10px 0;
+}
+
+button{
+	border-radius: 6px;
+    margin-top: 20px;
+    margin-left: auto;
+    width: 180px;
+    display: block;
+    letter-spacing: 0.05em;
+    background: #deb082;
+    color: #5f4224;
+    font-weight: bold;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+button:hover{
+	opacity: 0.5;
+}
+
+/* 操作結果 */
+.resultMessage{
+	font-size: 24px;
+    font-weight: bold;
+    color: #965f33;
+}
+
+
+/* スマホ対応 */ 
+@media screen and (max-width:480px) {
+	
+}

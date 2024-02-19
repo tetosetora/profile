@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	
+	<!-- 関連情報リスト取得 -->
+	<!-- フラグメントした部分はhome画面で使用 -->
+	
+	<div th:if="${applications!=null and !applications.isEmpty()}">
+		<h4>関連アプリケーション</h4>
+		<!-- フラグメント化 -->
+		<div th:fragment="relationApplication">
+			<ol class="pickup-relationList" th:each="app : ${applications}">
+				<a th:href="@{/applicationDetail(applicationId=${app.applicationId})}"><li th:text="${app.applicationName}"></li></a>
+			</ol>
+		</div>
+	</div>
+
+	<div th:if="${records!=null and !records.isEmpty()}">
+		<h4>関連備忘録</h4>
+		<!-- フラグメント化 -->
+		<div th:fragment="relationRecord">
+			<ol class="pickup-relationList" th:each="record : ${records}">
+				<a th:href="@{/recordDetail(recordId=${record.recordId})}"><li th:text="${record.recordName}"></li></a>
+			</ol>
+		</div>
+	</div>
+
+</body>
+</html>

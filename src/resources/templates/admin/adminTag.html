@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>タグ管理</title>
+	<link rel="stylesheet" th:href="@{/css/profile.css}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+	<!-- adminNavの埋め込み -->
+	<div th:replace="~{admin/adminTemplate/adminNav :: adminNav}"></div>
+
+	<h1 class="admin-title" th:text="${update ? 'タグ:更新フォーム' : 'タグ:新規作成フォーム'}"></h1>
+	
+	<session class="admin-updateCreateForm">
+		<h3>入力欄</h3>
+		<form class="admin-updateCreateForm-form" id="updateCreateForm-js" th:action="@{/createUpdateTag}" th:object="${tagInputUpdateDto}" method="post">
+			
+			<div>
+				<label for="tagName">タグ名:</label>
+				<input type="text" th:field="*{tagName}" id="tagName" maxlength="50" required>
+			</div>
+			
+			<!-- サブカテゴリーとタグの関連は相互の作成更新画面で設定できる -->
+			<fieldset>
+			    <legend>所属するサブカテゴリー:</legend>
+			    <div th:each="subCategory, iterStat : ${subCategories}">
+			        <input type="checkbox" th:id="${'subCategoryCheckbox' + iterStat.index}" th:field="*{subCategories}" 
+			        	th:value="${subCategory.subCategoryId}">
+			        <label th:for="${'subCategoryCheckbox' + iterStat.index}" 
+			        	th:text="${subCategory.subCategoryName}"></label>
+			    </div>
+			</fieldset>
+			
+			<input th:if="${update}" type="hidden" th:field="*{tagId}">
+			
+			<button th:text="${update ? '更新' : '新規作成'}" id="insert-form-button"></button>
+		</form>
+	
+		<form class="admin-updateCreateForm-deleteForm" id="deleteForm-js" th:action="@{/deleteTag}" method="post">
+			<input type="hidden" name="tagId" th:value="${tagInputUpdateDto.tagId}">
+			<button th:if="${update}" id="delete-foam-button">このタグを削除する</button>
+		</form>
+		
+	</session>
+	
+	<session class="admin-actionSelectForm">
+	<h3>管理対象選択</h3>
+	<a th:if="${update}" th:href="@{/adminTag}">新規で作成する</a>
+
+	<fieldset>
+	    <legend>管理(更新削除)するタグを選んでください:</legend>
+	    <div th:each="tag, iterStat : ${tags}">
+			<a th:href="@{/adminTag(tagId=${tag.tagId})}" th:text="${tag.tagName}"></a>
+	    </div>
+	</fieldset>
+	</session>
+	
+	<!-- フッターを埋め込む -->
+	<footer th:replace="~{fragment/footer :: footer}"></footer>
+
+	<script th:src="@{/js/formInputPassword.js}"></script>
+	
+</body>
+</html>

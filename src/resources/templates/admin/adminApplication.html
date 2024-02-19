@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>アプリケーション情報管理</title>
+	<link rel="stylesheet" th:href="@{/css/profile.css}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+	<!-- adminNavの埋め込み -->
+	<div th:replace="~{admin/adminTemplate/adminNav :: adminNav}"></div>
+
+	<h1 class="admin-title" th:text="${update ? 'アプリケーション情報:更新フォーム' : 'アプリケーション情報:新規作成フォーム'}"></h1>
+	
+	<session class="admin-updateCreateForm">
+		<h3>入力欄</h3>
+		<form class="admin-updateCreateForm-form" id="updateCreateForm-js" th:action="@{/createUpdateApplication}" th:object="${applicationInputUpdateDto}" method="post">
+			
+			<div>
+				<label for="applicationName">アプリ名(必須):</label>
+				<input type="text" id="applicationName" th:field="*{applicationName}" maxlength="100" required>
+			</div>
+			<div>
+				<label for="applicationNameEn">アプリ英名(必須):</label>
+				<input type="text" id="applicationNameEn" th:field="*{applicationNameEn}" maxlength="100" required>
+			</div>
+			<div>
+				<label for="overview">概要(必須):</label>
+				<textarea class="admin-form-textarea" id="overview" th:field="*{overview}" rows="6" maxlength="300" required></textarea>
+			</div>
+			<div>
+				<label for="requirements">要件(必須):</label>
+				<textarea class="admin-form-textarea" id="requirements" th:field="*{requirements}" rows="20" maxlength="3000" required></textarea>
+			</div>
+			<div>
+				<label for="startDate">開始日(必須):</label>
+				<input type="date" id="startDate" th:field="*{startDate}" required>
+			</div>
+			<div>
+				<label for="duration">期間 (月数):</label>
+				<input type="number" id="duration" th:field="*{duration}" maxlength="3">
+			</div>
+			<div>
+				<label for="responsibility">担当部位:</label>
+				<textarea class="admin-form-textarea" id="responsibility" th:field="*{responsibility}" rows="4" maxlength="300"></textarea>
+			</div>
+			<div>
+				<label for="challenges">困難点:</label>
+				<textarea class="admin-form-textarea" rows="15" id="challenges" th:field="*{challenges}" maxlength="3000"></textarea>
+			</div>
+			<div>
+				<label for="futureVision">ビジョン:</label>
+				<textarea class="admin-form-textarea" rows="15" id="futureVision" th:field="*{futureVision}" maxlength="3000"></textarea>
+			</div>
+			<div>
+				<label for="status">ステータス(必須):</label>
+				<input type="text" id="status" th:field="*{status}" maxlength="50" required>
+				<p>設計中、開発中、テスト中、デバッグ中、リリース済み、更新中など</p>
+			</div>
+	
+		    <fieldset>
+			    <legend>関連サブカテゴリー:</legend>
+			    <div th:each="subCategory, iterStat : ${subCategories}">
+			        <input type="checkbox" th:id="${'subCategoryCheckbox' + iterStat.index}" th:field="*{subCategories}" 
+			        	th:value="${subCategory.subCategoryId}">
+			        <label th:for="${'subCategoryCheckbox' + iterStat.index}" 
+			        	th:text="${subCategory.subCategoryName}"></label>
+			    </div>
+			</fieldset>
+	
+			<fieldset>
+			    <legend>関連タグ:</legend>
+			    <div th:each="tag, iterStat : ${tags}">
+			        <input type="checkbox" th:id="${'tagCheckbox' + iterStat.index}" th:field="*{tags}" th:value="${tag.tagId}">
+			        <label th:for="${'tagCheckbox' + iterStat.index}" th:text="${tag.tagName}"></label>
+			    </div>
+			</fieldset>
+	
+			<input th:if="${update}" type="hidden" th:field="*{applicationId}">
+			
+			<button th:text="${update ? '更新' : '新規作成'}" id="insert-form-button"></button>
+		</form>
+		
+		<form class="admin-updateCreateForm-deleteForm" id="deleteForm-js" th:action="@{/deleteApplication}" method="post">
+			<input type="hidden" name="applicationId" th:value="${applicationInputUpdateDto.applicationId}">
+			<button th:if="${update}" id="delete-foam-button">このアプリケーション情報を削除する</button>
+		</form>
+		
+	</session>
+	
+	<session class="admin-actionSelectForm">
+		<h3>管理対象選択</h3>
+		<form class="admin-actionSelectForm-form" th:action="@{/adminApplication}" method="post">
+			<div>
+				<label for="applicationControl">アプリケーション情報を管理(更新削除)する:</label> <input type="number" 
+					id="applicationControl" name="applicationId" maxlength="4"
+					placeholder="アプリケーションIDを入力してください" required>
+			</div>
+			<button type="submit">検索</button>
+		</form>
+		
+		<div>
+			<a th:if="${update}" th:href="@{/adminApplication}">新規で作成する</a>
+		</div>
+	
+	</session>
+	
+	<!-- フッターを埋め込む -->
+	<footer th:replace="~{fragment/footer :: footer}"></footer>
+	
+	<script th:src="@{/js/formInputPassword.js}"></script>
+
+</body>
+
+</html>

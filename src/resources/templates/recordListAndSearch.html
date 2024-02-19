@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>検索と結果(備忘録アプリケーション)</title>
+	<link rel="stylesheet" th:href="@{/css/profile.css}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body class="fade-in">
+
+	<header>
+		<!-- returnNavを埋め込む -->
+		<nav th:replace="~{fragment/nav :: returnNav}"></nav>
+
+		<h1 class="relationList-title">私の備忘録</h1class>
+	</header>
+
+	<p><span class="relationList-searchResult" th:text="${searchName + 'で表示中'}"></span></p>
+
+	<!-- 備忘録一覧 -->
+	<div class="relationList-overview">
+		<ol class="relationList-overview-ol" th:each="record : ${records}">
+			<a th:href="@{/recordDetail(recordId=${record.recordId})}"><li th:text="${record.recordName}"></li></a>
+			<li th:text="${'ID：' + record.recordId}"></li>
+		</ol>
+	</div>
+	
+	<h3 class="list-search-label"><span>Search</span></h3>
+	<section class="list-search-section">
+
+		<!-- キーワード検索 -->
+		<h4>検索したい備忘録のキーワードを入力してください</h4>
+		<div class="list-search-section-keyword">
+			<form th:action="@{/recordListAndSearch}" method="post">
+				<input type="text" name="keyword">
+				<button type="submit">送信</button>
+			</form>
+		</div>
+
+		<!-- サブカテゴリー一覧から検索条件を選ぶ -->
+		<h4>検索したい備忘録のカテゴリーを選んでください</h4>
+		<div>
+			<ul class="list-search-section-cate"list-search-section-cate>
+				<li th:each="subCategory : ${subCategories}">
+					<a th:href="@{/recordListAndSearch(subCategoryId=${subCategory.subCategoryId}, subCategoryName=${subCategory.subCategoryName})}"
+						th:text="${subCategory.subCategoryName}"></a>
+				</li>
+			</ul>
+		</div>
+
+		<!-- タグ一覧から検索条件を選ぶ -->
+		<h4>検索したい備忘録のタグを選んでください</h4>
+		<div>
+			<ul class="list-search-section-cate">
+				<li th:each="tag : ${tags}">
+					<a th:href="@{/recordListAndSearch(tagId=${tag.tagId}, tagName=${tag.tagName})}"
+						th:text="${tag.tagName}"></a>
+				</li>
+			</ul>
+		</div>
+
+	</section>
+
+	<!-- フッターを埋め込む -->
+	<footer th:replace="~{fragment/footer :: footer}"></footer>
+
+</body>
+
+</html>

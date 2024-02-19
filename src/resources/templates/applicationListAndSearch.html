@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>私のアプリケーション一覧</title>
+	<link rel="stylesheet" th:href="@{/css/profile.css}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body class="fade-in">
+
+	<header>
+		<!-- returnNavを埋め込む -->
+		<nav th:replace="~{fragment/nav :: returnNav}"></nav>
+		
+		<h1 class="applicationList-title">私のアプリケーション</h1>
+	</header>
+
+	<p><span class="applicationList-searchResult" th:text="${searchName + 'で表示中'}"></span></p>
+
+	<div class="applicationList-overview" th:each="ApplicationsOverviewDto : ${applications}">
+		<div class="applicationList-overview-name">
+			<!-- アプリケーション名 -->
+			<a th:href="@{/applicationDetail(applicationId=${ApplicationsOverviewDto.applicationId})}" 
+					th:text="${ApplicationsOverviewDto.applicationName}"></a>
+		</div>
+		<div class="applicationList-overview-idOverview">
+			<!-- アプリケーション概要 -->
+			<div class="outputHtml">
+				<p th:utext="${ApplicationsOverviewDto.overview}"></p>
+			</div>
+			<!-- アプリケーションId -->
+			<p th:text="${'ID：' + ApplicationsOverviewDto.applicationId}"></p>
+		</div>
+	</div>
+
+	<h3 class="list-search-label"><span>Search</span></h3>
+	<section class="list-search-section">
+
+		<!-- キーワード検索 -->
+		<h4>検索したいアプリケーションのキーワードを入力してください</h4>
+		<div class="list-search-section-keyword">
+			<form th:action="@{/applicationListAndSearch}" method="post">
+				<input type="text" name="keyword">
+				<button type="submit">送信</button>
+			</form>
+		</div>
+
+		<!-- サブカテゴリー一覧から検索条件を選ぶ -->
+		<h4>検索したいアプリケーションのカテゴリーを選んでください</h4>
+		<div>
+			<ul class="list-search-section-cate">
+				<li th:each="subCategory : ${subCategories}">
+					<a th:href="@{/applicationListAndSearch(subCategoryId=${subCategory.subCategoryId}, subCategoryName=${subCategory.subCategoryName})}"
+						th:text="${subCategory.subCategoryName}"></a>
+				</li>
+			</ul>
+		</div>
+
+		<!-- タグ一覧から検索条件を選ぶ -->
+		<h4>検索したいアプリケーションのタグを選んでください</h4>
+		<div>
+			<ul class="list-search-section-cate">
+				<li th:each="tag : ${tags}">
+					<a th:href="@{/applicationListAndSearch(tagId=${tag.tagId}, tagName=${tag.tagName})}"
+						th:text="${tag.tagName}"></a>
+				</li>
+			</ul>
+		</div>
+
+	</section>
+
+	<!-- フッターを埋め込む -->
+	<footer th:replace="~{fragment/footer :: footer}"></footer>
+
+</body>
+
+</html>

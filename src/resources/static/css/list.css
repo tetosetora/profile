@@ -1,0 +1,190 @@
+@charset "UTF-8";
+
+.applicationList-title, .relationList-title {
+	color: #6c4c41;
+	font-weight: bold;
+	text-align: center;
+	padding: 0 20px 20px;
+	border-bottom: 2px solid #d9ae7d;
+}
+
+.applicationList-searchResult,.relationList-searchResult {
+	display: inline-block;
+	background: #8a552f;
+	color: #efefdf;
+	padding: 2px 5px;
+}
+
+/* アプリケーション専用---------------------------------------------- */
+.applicationList-overview {
+	display: flex;
+	justify-content: space-evenly;
+	margin: 30px 70px;
+	padding: 10px 20px;
+	border: double 5px #a56b08;
+	background-color: #f5efc3;
+	transition: all 0.5s ease;
+}
+
+.applicationList-overview-name {
+	flex: 1;
+	display: flex;
+	padding-right: 20px;
+	border-right: solid 2px #f6d2b4;
+	transition: all 0.5s ease;
+}
+
+.applicationList-overview-name a {
+/*	height: 40px;  flex内でインライン風にするため */
+	text-decoration-line: none;
+	font-size: 27px;
+	color: #ff7045;
+	transition: all 0.5s ease;
+}
+
+.applicationList-overview-name a:hover {
+	opacity: 0.4;
+}
+
+.applicationList-overview-idOverview {
+	flex: 2;
+	font-size: 0;
+	max-width: 65%;
+	word-wrap: break-word;
+	color: #00567b;
+	opacity: 0;
+	transition: font-size 1s ease, opacity 2s ease-in;
+}
+
+.applicationList-overview-idOverview p {
+	margin: 10px 20px;
+	word-wrap: break-word;
+}
+
+.applicationList-overview:hover {
+	border: double 5px #1284a4;
+}
+
+.applicationList-overview:hover .applicationList-overview-name {
+	border-right: solid 2px #a2bac0;
+}
+.applicationList-overview:hover .applicationList-overview-name a {
+	color: #1284a4;
+}
+
+.applicationList-overview:hover .applicationList-overview-idOverview {
+	font-size: 16px;
+    opacity: 1;
+    margin: auto;
+}
+.applicationList-overview:not(:hover) {
+    transition-duration: 2s;
+}
+
+/* 備忘録専用---------------------------------------------- */
+.relationList-overview{
+	display: flex;
+	margin: 20px 50px;
+	flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.relationList-overview-ol {
+    list-style: none;
+    display: inline-block;
+    position: relative;
+    padding: .5em 1em;
+    width: 35%;
+    text-align: center;
+    border-right: 27px solid #d09125;
+    background-color: #f5f5f5;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.2);
+    color: #444c06;
+    transform-origin: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease;
+}
+
+.relationList-overview-ol:hover {
+    transform: scaleX(0.95) rotate(-2deg);
+    box-shadow: 12px 4px 7px rgba(52, 59, 10, 0.4);
+    border-radius: 0 0 5px 0;
+}
+
+.relationList-overview-ol li {
+	word-wrap: break-word;
+}
+
+.relationList-overview-ol a{
+	display: inline-block;
+	text-decoration: none;
+	font-size: 20px;
+	color: #332214;
+}
+.relationList-overview-ol a:hover{
+	color: #00567b;
+}
+
+/* アコーディオンとコード */
+.mainAccordion {
+	display: block;
+	background-color: #efefdf;
+	padding: 5px 20px;
+	border-radius: 24px;
+	margin-top: 10px;
+}
+
+.subAccordion {
+	display: block;
+	background-color: #ffe4c4;
+	padding: 5px 20px;
+	border-radius: 24px;
+}
+
+/* 検索欄 ------------------------------------------------- */
+.list-search-label {
+	color: #c0b5ac;
+	margin-bottom: -20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.list-search-label span {
+	background-color: #332214;
+	padding: 2px 10px;
+}
+
+.list-search-section {
+	border-radius: 0;
+	border: solid 2px #332214;
+}
+
+.list-search-section-keyword {
+	margin-left: 5%;
+}
+
+.list-search-section-cate {
+	display: flex;
+	list-style: none;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	grid-gap: 15px;
+	margin: 10px 30px;
+	padding: 0px;
+}
+
+
+
+/* スマホ対応 */
+@media screen and (max-width:480px) {
+
+	.worksList_h1 {
+		padding: 0;
+		font-size: 26px;
+	}
+
+	.worksList_h1::after {
+		width: 30px;
+		height: 30px;
+	}
+
+}

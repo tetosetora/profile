@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProfile name="dev">
+         開発環境用のログ設定 
+		<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		    <file>logs/profile.log</file>
+		    <encoder>
+		        <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+		    </encoder>
+		    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		         日付ベースでローテーションし、5回分のログを保持 
+		        <fileNamePattern>logs/archived/profile-%d{yyyy-MM-dd}.log</fileNamePattern>
+		        <maxHistory>5</maxHistory>
+		    </rollingPolicy>
+		</appender>
+
+        <root level="debug">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <!-- 本番環境用のログ設定 -->
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>/var/log/profile/application.log</file>
+            <encoder>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+            </encoder>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			    <!-- 日付ベースでローテーションし、5回分のログを保持 -->
+			    <fileNamePattern>/var/log/profile/archived/application-%d{yyyy-MM-dd}.log</fileNamePattern>
+			    <maxHistory>5</maxHistory>
+			</rollingPolicy>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+</configuration>
+
